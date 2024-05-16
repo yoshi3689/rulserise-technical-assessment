@@ -1,0 +1,234 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Employee API",
+    "version": "1.0.0",
+    "description": "API documentation for Employee CRUD operations"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "employees",
+      "description": "Endpoints for managing employees"
+    },
+    {
+      "name": "admin",
+      "description": "Endpoints for admin operations"
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "tags": ["employees"],
+        "summary": "Get all employees",
+        "description": "Returns a list of all employees",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "type": "array", "items": { "$ref": "#/definitions/Employee" } }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "post": {
+        "tags": ["employees"],
+        "summary": "Create a new employee",
+        "description": "Creates a new employee with the provided details",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Employee details",
+            "required": true,
+            "schema": { "$ref": "#/definitions/CreateEmployeeInput" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Employee created successfully" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "tags": ["employees"],
+        "summary": "Get employee by ID",
+        "description": "Returns the employee with the specified ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the employee to retrieve",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation", "schema": { "$ref": "#/definitions/Employee" } },
+          "404": { "description": "Employee not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "put": {
+        "tags": ["employees"],
+        "summary": "Update employee by ID",
+        "description": "Updates the employee with the specified ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the employee to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated employee details",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UpdateEmployeeInput" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Employee updated successfully" },
+          "404": { "description": "Employee not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "delete": {
+        "tags": ["employees"],
+        "summary": "Delete employee by ID",
+        "description": "Deletes the employee with the specified ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the employee to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Employee deleted successfully" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/employees/search": {
+      "get": {
+        "tags": ["employees"],
+        "summary": "Find employees by name",
+        "description": "Returns a list of employees whose names contain the specified string",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name to search for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": { "type": "array", "items": { "$ref": "#/definitions/Employee" } }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/admin/total-employees": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get total employees",
+        "description": "Returns the total number of employees",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "totalEmployees": { "type": "integer" }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/admin/total-available-roles": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get total available roles",
+        "description": "Returns the list of available job roles",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "availableRoles": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/admin/job-role": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "Create job role",
+        "description": "Creates a new job role",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Job role details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Job role created successfully" },
+          "400": { "description": "Job role already exists" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/admin/job-role/{id}": {
+      "delete": {
+        "tags": ["admin"],
+        "summary": "Delete job role by ID",
+        "description": "Deletes the job role with the specified ID",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Job role details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Job role created successfully" },
+          "400": { "description": "Job role already exists" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    }
+  }
+}
